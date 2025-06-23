@@ -1,0 +1,8 @@
+chromedriver.exe
+dataset-all-zip.zip
+test.csv
+url-scraper.py
+progress.log
+# Ignore Python virtual environment env
+env/
+trustpilot_categories.json
