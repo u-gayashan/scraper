@@ -5,16 +5,17 @@ from time import sleep
 import json
 
 
-def log_status(website_url, url_counter):
+def log_status(website_url, url_counter, total_review_count):
     with open('scraping_log.txt', 'a', encoding='utf-8') as log_file:
-        log_file.write(f"Processed URL {url_counter}: {website_url}\n")
-        print(f"Logged URL {url_counter}: {website_url}")
+        log_file.write(f"URL {url_counter}: {website_url} - Total Reviews Scraped: {total_review_count}\n")
+        print(f"Logged URL {url_counter}: {website_url} - Total Reviews Scraped: {total_review_count}")
 
 def main():
     companies_data = []
     from_page = 1
     to_page = 1000000000
     url_counter = 1
+    total_review_count = 1
 
     # lets get company urls from the url-master.csv file in root directory
     # with open('url-master.csv', 'r', encoding='utf-8') as file:
@@ -82,6 +83,7 @@ def main():
                         })
                     # let's have a dynamic sleep to avoid being blocked
                     from random import randint
+                    total_review_count += 1
                     sleep(randint(1, 3))
                 reviews_json_string = json.dumps(all_reviews_for_current_company)
                 companies_data.append({
@@ -96,7 +98,7 @@ def main():
                 # After processing all companies, create the final DataFrame
                 # After processing all companies, create the final DataFrame and save to CSV
                 if companies_data:
-                    log_status(website_url,url_counter)
+                    log_status(website_url,url_counter, total_review_count)
                     url_counter += 1
                     df = pd.DataFrame(companies_data)
                     df.head()
